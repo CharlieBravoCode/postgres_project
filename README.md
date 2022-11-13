@@ -26,4 +26,9 @@ Build the images and run the containers:
     ```
   Test it out at [http://localhost:1337](http://localhost:1337). No mounted folders. To apply changes, the image must be re-built.
 
-  
+
+
+Franchise.cloud
+
+Terminal:
+npx franchise-client@0.2.7
