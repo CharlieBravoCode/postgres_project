@@ -13,7 +13,32 @@ Build the images and run the containers:
 
 Test it out at [http://localhost:5000](http://localhost:5000). The "web" folder is mounted into the container and your code changes apply automatically.
 
+PgAdmin is available at [http://localhost:5555](http://localhost:5555). The default credentials are `
 
+PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+PGADMIN_DEFAULT_PASSWORD: admin
+
+Connect PgAdmin to the database:
+
+    ```
+    GENERAL
+    Docker Localhost
+
+    Host name/address: 172.19.0.2
+    Port: 5432
+    Maintenance database: hello_flask_dev
+    Username: hello_flask
+    Password: hello_flask
+    ```
+
+Error handling if connection fails: Track down the correct Ip address of the db container:
+
+    ```
+    $ docker ps
+    ### Find and copy the container id of the container "postgres:13-alpine"
+    $ docker inspect <container id of the container "postgres:13-alpine> | grep IPAddress  
+    $ 
+    ```
 
 ### Production
 
@@ -28,7 +53,3 @@ Build the images and run the containers:
 
 
 
-Franchise.cloud
-
-Terminal:
-npx franchise-client@0.2.7
