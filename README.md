@@ -11,19 +11,27 @@ Build the images and run the containers:
     $ docker-compose up -d --build
     ```
 
-Test it out at [http://localhost:5000](http://localhost:5000). The "web" folder is mounted into the container and your code changes apply automatically.
+Test it out at [http://localhost:5000](http://localhost:5000). 
+The "web" folder is mounted into the container and your code changes apply automatically.
 
+### PgAdmin
 PgAdmin is available at [http://localhost:5555](http://localhost:5555). The default credentials are `
 
-PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-PGADMIN_DEFAULT_PASSWORD: admin
+### Credentials
+PGADMIN_DEFAULT_EMAIL:      pgadmin4@pgadmin.org
 
+PGADMIN_DEFAULT_PASSWORD:   admin
+
+### Fixes
 Connect PgAdmin to the database:
 
+    
+    Add Server
     ```
     GENERAL
-    Docker Localhost
+    Name: Docker Localhost
 
+    CONNECTION
     Host name/address: 172.19.0.2
     Port: 5432
     Maintenance database: hello_flask_dev
@@ -31,7 +39,7 @@ Connect PgAdmin to the database:
     Password: hello_flask
     ```
 
-Error handling if connection fails: Track down the correct Ip address of the db container:
+Error handling if connection fails: Track down the correct Ip address of the postgres container:
 
     ```
     $ docker ps
