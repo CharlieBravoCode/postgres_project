@@ -129,14 +129,14 @@ def hello_world():
     return jsonify(hello="world")
 
 
-## Return the class Sale(db.Model) as json under @app.route('/table', methods = ['GET'])
-@app.route('/table', methods = ['GET'])
+
+@app.route('/sales1', methods = ['GET'])
 def table():
     sale = Sale.query.all()
     return jsonify([e.serialize() for e in sale])
 
 
-@app.route('/sales', methods = ['GET'])
+@app.route('/sales2', methods = ['GET'])
 def getsales():
     all_sales = []
     sales = Sale.query.all()
@@ -153,18 +153,5 @@ def getsales():
     return jsonify(all_sales)
 
 
-
-@app.route('/events', methods = ['GET'])
-def getevents():
-     all_events = []
-     events = Events.query.all()
-     for event in events:
-          results = {
-                    "id":event.id,
-                    "identifier":event.identifier,
-          }
-          all_events.append(results)
-
-     return jsonify(all_events)
 
 
