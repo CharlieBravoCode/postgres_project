@@ -9,6 +9,7 @@ Build the images and run the containers:
 
     ```
     $ docker-compose up -d --build
+    $ docker-compose -f docker-compose.yml up -d --build 
     ```
 
 Test it out at [http://localhost:5000](http://localhost:5000). 
@@ -34,9 +35,9 @@ Connect PgAdmin to the database:
     CONNECTION
     Host name/address: 172.19.0.2
     Port: 5432
-    Maintenance database: hello_flask_dev
-    Username: hello_flask
-    Password: hello_flask
+    Maintenance database: code-db
+    Username: code
+    Password: code
     ```
 
 Error handling if connection fails: Track down the correct Ip address of the postgres container:

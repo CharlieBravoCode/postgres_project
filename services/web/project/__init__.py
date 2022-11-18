@@ -14,30 +14,6 @@ app = Flask(__name__)
 app.config.from_object("project.config.Config")
 db = SQLAlchemy(app)
 
-######## Raus ################################################
-
-class User(db.Model):
-    __tablename__ = "users"
-
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(128), unique=True, nullable=False)
-    active = db.Column(db.Boolean(), default=True, nullable=False)
-
-    def __init__(self, email):
-        self.email = email
-
-class Events(db.Model):
-    __tablename__ = "events"
-
-    id = db.Column(db.Integer, primary_key=True)
-    identifier = db.Column(db.String(128), unique=True, nullable=False)
-
-
-    def __init__(self, identifier):
-        self.identifier = identifier
-
-
-######## ################################################################
 
 class Country(db.Model):
     __tablename__ = "country"
@@ -63,8 +39,6 @@ class Product(db.Model):
 
 
 
-
-
 class City(db.Model):
     __tablename__ = "city"
     
@@ -76,6 +50,7 @@ class City(db.Model):
         self.city_id = city_id
         self.city_name = city_name
         self.country_id = country_id
+
 
 
 class Store(db.Model):
@@ -133,7 +108,6 @@ class Sale(db.Model):
         self.store_id = store_id
 
 
-
 class OrderStatus(db.Model):
     __tablename__ = "order_status"
 
@@ -150,16 +124,34 @@ class OrderStatus(db.Model):
 
 
 
-
-
-
-
-
-
-
 @app.route("/")
 def hello_world():
     return jsonify(hello="world")
+
+
+## Return the class Sale(db.Model) as json under @app.route('/table', methods = ['GET'])
+@app.route('/table', methods = ['GET'])
+def table():
+    sale = Sale.query.all()
+    return jsonify([e.serialize() for e in sale])
+
+
+@app.route('/sales', methods = ['GET'])
+def getsales():
+    all_sales = []
+    sales = Sale.query.all()
+    for sale in sales:
+        result = {
+            'sale_id': sale.sale_id,
+            'amount': sale.amount,
+            'date_sale': sale.date_sale,
+            'product_id': sale.product_id,
+            'user_id': sale.user_id,
+            'store_id': sale.store_id
+        }
+        all_sales.append(result)
+    return jsonify(all_sales)
+
 
 
 @app.route('/events', methods = ['GET'])
@@ -176,26 +168,3 @@ def getevents():
      return jsonify(all_events)
 
 
-@app.route("/static/<path:filename>")
-def staticfiles(filename):
-    return send_from_directory(app.config["STATIC_FOLDER"], filename)
-
-
-@app.route("/media/<path:filename>")
-def mediafiles(filename):
-    return send_from_directory(app.config["MEDIA_FOLDER"], filename)
-
-
-@app.route("/upload", methods=["GET", "POST"])
-def upload_file():
-    if request.method == "POST":
-        file = request.files["file"]
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config["MEDIA_FOLDER"], filename))
-    return """
-    <!doctype html>
-    <title>upload new File</title>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file><input type=submit value=Upload>
-    </form>
-    """
