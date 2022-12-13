@@ -83,4 +83,3 @@ CREATE TABLE IF NOT EXISTS order_status (
 	  REFERENCES status_name(status_name_id)  
 );
 
-ALTER TABLE store ADD FOREIGN KEY (city_id) REFERENCES city(city_id);

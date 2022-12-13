@@ -58,7 +58,7 @@ class Store(db.Model):
     
     store_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
-    city_id = db.Column(db.Integer, nullable=False)
+    city_id = db.Column(db.Integer, db.ForeignKey('city.city_id'), nullable=False)
     city = db.relationship('City', backref=db.backref('stores', uselist=True, cascade='delete,all'))
 
     def __init__(self, name, city_id):
@@ -130,13 +130,8 @@ def hello_world():
 
 
 
-@app.route('/sales1', methods = ['GET'])
-def table():
-    sale = Sale.query.all()
-    return jsonify([e.serialize() for e in sale])
 
-
-@app.route('/sales2', methods = ['GET'])
+@app.route('/sales', methods = ['GET'])
 def getsales():
     all_sales = []
     sales = Sale.query.all()
