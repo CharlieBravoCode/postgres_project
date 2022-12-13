@@ -28,7 +28,7 @@ class Country(db.Model):
 
 
 class Product(db.Model):
-    __tablename__ = "products"
+    __tablename__ = "product"
     
     product_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
@@ -98,6 +98,7 @@ class Sale(db.Model):
     product_id = db.Column(db.INT, db.ForeignKey('product.product_id'), nullable=False)
     user_id = db.Column(db.INT, db.ForeignKey('users.user_id'), nullable=False)
     store_id = db.Column(db.INT, db.ForeignKey('store.store_id'), nullable=False)
+    product = db.relationship('Product', backref=db.backref('sales', uselist=True, cascade='delete,all')) #Add this line
     
     def __init__(self, sale_id, amount, date_sale, product_id, user_id, store_id):
         self.sale_id = sale_id
@@ -131,22 +132,21 @@ def hello_world():
 
 
 
-@app.route('/sales', methods = ['GET'])
+@app.route('/sales', methods=['GET'])
 def getsales():
     all_sales = []
     sales = Sale.query.all()
+    sales = Sale.query.join(Product, Sale.product_id == Product.product_id).all()
     for sale in sales:
         result = {
             'sale_id': sale.sale_id,
             'amount': sale.amount,
             'date_sale': sale.date_sale,
-            'product_id': sale.product_id,
+            'product_name': sale.product.name, #Modify this line
             'user_id': sale.user_id,
             'store_id': sale.store_id
         }
         all_sales.append(result)
     return jsonify(all_sales)
-
-
 
 
