@@ -87,3 +87,4 @@ Now we are going to execute the sql scripts to fill the database with data.
 To close down the project, please type in your terminal:
 
     $ docker-compose down
+    
